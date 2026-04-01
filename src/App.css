@@ -1,0 +1,298 @@
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px 0;
+  border-bottom: 2px solid #e94560;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  color: #e94560;
+}
+
+.subtitle {
+  color: #aaa;
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+/* панель управления */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #16213e;
+  color: #eee;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #e94560;
+}
+
+.genre-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: #e94560;
+  color: #e94560;
+}
+
+.filter-btn.active {
+  background: #e94560;
+  border-color: #e94560;
+  color: #fff;
+}
+
+.add-btn {
+  padding: 10px 18px;
+  background: #e94560;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: #c73652;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+  font-size: 1.1rem;
+}
+
+/* список карточек */
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* карточка фильма */
+.movie-card {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #2a2a4a;
+  transition: transform 0.15s;
+}
+
+.movie-card:hover {
+  transform: translateY(-3px);
+}
+
+.movie-card.watched {
+  border-left: 4px solid #4caf50;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.movie-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  flex: 1;
+}
+
+.genre-tag {
+  background: #0f3460;
+  color: #7eb8f7;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.rating {
+  color: #f5c518;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.watched-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.watched-label input {
+  cursor: pointer;
+  accent-color: #4caf50;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid #4a90d9;
+  background: transparent;
+  color: #4a90d9;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background: #4a90d9;
+  color: #fff;
+}
+
+.btn-delete {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid #e94560;
+  background: transparent;
+  color: #e94560;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: #e94560;
+  color: #fff;
+}
+
+/* форма */
+.form-overlay {
+  background: #0f0f2a;
+  border: 1px solid #e94560;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.movie-form h2 {
+  margin-bottom: 18px;
+  color: #e94560;
+}
+
+.movie-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.movie-form input[type="text"],
+.movie-form input[type="range"] {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #16213e;
+  color: #eee;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.movie-form input[type="text"]:focus {
+  border-color: #e94560;
+}
+
+.checkbox-label {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px !important;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  accent-color: #e94560;
+  width: 16px;
+  height: 16px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-save {
+  padding: 10px 20px;
+  background: #e94560;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-save:hover {
+  background: #c73652;
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #555;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-cancel:hover {
+  border-color: #aaa;
+  color: #fff;
+}
