@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 const emptyForm = { title: '', genre: '', rating: 5, watched: false }
 
-function MovieForm({ onAdd, onSave, onCancel, editData }) {
+function MovieForm({ onSave, onCancel, editData }) {
   const [form, setForm] = useState(emptyForm)
 
   // если передали editData — заполняем форму данными фильма
@@ -26,11 +26,7 @@ function MovieForm({ onAdd, onSave, onCancel, editData }) {
     e.preventDefault()
     if (!form.title.trim()) return
 
-    if (editData) {
-      onSave(form)
-    } else {
-      onAdd({ ...form, rating: Number(form.rating) })
-    }
+    onSave({ ...form, rating: Number(form.rating) })
   }
 
   return (

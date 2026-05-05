@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Отчет - Movie Tracker</title>
+    <style>
+      body {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px 40px;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #222;
+      }
+
+      h1,
+      h2 {
+        color: #111827;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+      }
+
+      h2 {
+        margin-top: 28px;
+        border-bottom: 1px solid #d1d5db;
+        padding-bottom: 6px;
+      }
+
+      code {
+        background: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      ul {
+        padding-left: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Отчет по мини-проекту Movie Tracker</h1>
+    <p>
+      Movie Tracker — это React-приложение для ведения личной коллекции
+      фильмов. Пользователь может добавлять фильмы вручную, редактировать их,
+      отмечать просмотренные, искать по названию и фильтровать по жанру. Также
+      в приложении есть отдельная страница с подборкой фильмов, которые
+      загружаются из внешнего API и могут быть добавлены в общую коллекцию.
+    </p>
+
+    <h2>Структура компонентов</h2>
+    <ul>
+      <li><code>App.jsx</code> — общее состояние и маршрутизация.</li>
+      <li><code>components/Layout.jsx</code> — шапка и навигация.</li>
+      <li><code>pages/MyMoviesPage.jsx</code> — личная коллекция.</li>
+      <li><code>pages/DiscoverPage.jsx</code> — страница с API.</li>
+      <li><code>components/MovieList.jsx</code> — список фильмов.</li>
+      <li><code>components/MovieCard.jsx</code> — карточка фильма.</li>
+      <li><code>components/MovieForm.jsx</code> — форма добавления и редактирования.</li>
+      <li><code>components/SearchBar.jsx</code> — поиск.</li>
+      <li><code>components/RecommendationCard.jsx</code> — карточка фильма из API.</li>
+    </ul>
+
+    <h2>Использование useState</h2>
+    <ul>
+      <li>
+        В <code>App.jsx</code> хранится общий массив <code>movies</code>.
+      </li>
+      <li>
+        В <code>MyMoviesPage.jsx</code> хранятся <code>searchText</code>,
+        <code>filterGenre</code>, <code>showForm</code>, <code>editMovie</code>.
+      </li>
+      <li>
+        В <code>MovieForm.jsx</code> хранится состояние формы <code>form</code>.
+      </li>
+      <li>
+        В <code>DiscoverPage.jsx</code> хранятся
+        <code>recommendations</code>, <code>loading</code>, <code>error</code>.
+      </li>
+    </ul>
+
+    <h2>Использование useEffect</h2>
+    <ul>
+      <li>
+        В <code>App.jsx</code> при изменении массива
+        <code>movies</code> данные сохраняются в <code>localStorage</code>.
+      </li>
+      <li>
+        В <code>DiscoverPage.jsx</code> при открытии страницы выполняется
+        <code>fetch</code> к API и данные отображаются в интерфейсе.
+      </li>
+    </ul>
+
+    <h2>Использование props</h2>
+    <ul>
+      <li>
+        <code>App.jsx</code> передает массив <code>movies</code> и функции в
+        страницы.
+      </li>
+      <li>
+        <code>MyMoviesPage.jsx</code> передает данные в
+        <code>MovieList</code>, <code>MovieForm</code>, <code>SearchBar</code>.
+      </li>
+      <li>
+        <code>MovieList.jsx</code> передает отдельный фильм в
+        <code>MovieCard</code>.
+      </li>
+      <li>
+        <code>DiscoverPage.jsx</code> передает фильм в
+        <code>RecommendationCard</code>.
+      </li>
+    </ul>
+
+    <h2>Работа с API</h2>
+    <p>Для загрузки данных используется <code>fetch</code> к API:</p>
+    <p><code>https://ghibliapi.vercel.app/films</code></p>
+    <ul>
+      <li>После загрузки приложение берет несколько фильмов из ответа.</li>
+      <li>
+        Для каждого фильма формируется объект с нужными полями для интерфейса.
+      </li>
+      <li>
+        Пользователь может добавить фильм из внешней подборки в личную
+        коллекцию.
+      </li>
+    </ul>
+
+    <h2>Routing</h2>
+    <ul>
+      <li>
+        В <code>main.jsx</code> приложение обернуто в
+        <code>BrowserRouter</code>.
+      </li>
+      <li>
+        В <code>App.jsx</code> настроены маршруты <code>/</code> и
+        <code>/discover</code>.
+      </li>
+      <li>
+        Переход между страницами выполняется через <code>NavLink</code>.
+      </li>
+    </ul>
+
+    <h2>Основная логика приложения</h2>
+    <ul>
+      <li>Пользователь может добавлять, редактировать и удалять фильмы.</li>
+      <li>У каждого фильма можно переключать статус просмотра.</li>
+      <li>Список фильмов сохраняется в <code>localStorage</code>.</li>
+      <li>
+        На странице API можно получать внешние данные и добавлять их в общий
+        список.
+      </li>
+    </ul>
+
+    <h2>Запуск проекта</h2>
+    <p><code>npm install</code></p>
+    <p><code>npm run dev</code></p>
+  </body>
+</html>

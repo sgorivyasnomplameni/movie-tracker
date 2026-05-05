@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import MovieList from './components/MovieList'
-import MovieForm from './components/MovieForm'
-import SearchBar from './components/SearchBar'
+import { useEffect, useState } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Layout from './components/Layout'
+import DiscoverPage from './pages/DiscoverPage'
+import MyMoviesPage from './pages/MyMoviesPage'
 import './App.css'
 
-// начальные данные чтобы не было пусто при первом запуске
 const startMovies = [
   { id: 1, title: 'Интерстеллар', genre: 'Фантастика', rating: 9, watched: true },
   { id: 2, title: 'Начало', genre: 'Триллер', rating: 8, watched: true },
@@ -12,103 +12,96 @@ const startMovies = [
   { id: 4, title: 'Зеленая миля', genre: 'Драма', rating: 9, watched: true },
 ]
 
-function App() {
-  const [movies, setMovies] = useState(startMovies)
-  const [searchText, setSearchText] = useState('')
-  const [filterGenre, setFilterGenre] = useState('Все')
-  const [showForm, setShowForm] = useState(false)
-  const [editMovie, setEditMovie] = useState(null)
+const STORAGE_KEY = 'movie-tracker-movies'
 
-  // добавление нового фильма
+function App() {
+  const [movies, setMovies] = useState(() => {
+    const savedMovies = localStorage.getItem(STORAGE_KEY)
+
+    if (!savedMovies) {
+      return startMovies
+    }
+
+    try {
+      return JSON.parse(savedMovies)
+    } catch {
+      return startMovies
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(movies))
+  }, [movies])
+
   const handleAdd = (newMovie) => {
     const movieWithId = { ...newMovie, id: Date.now() }
-    setMovies([...movies, movieWithId])
-    setShowForm(false)
+    setMovies((currentMovies) => [...currentMovies, movieWithId])
   }
 
   const handleDelete = (id) => {
-    setMovies(movies.filter((m) => m.id !== id))
+    setMovies((currentMovies) =>
+      currentMovies.filter((movie) => movie.id !== id)
+    )
   }
 
-  // переключаем просмотрен / не просмотрен
   const handleToggleWatched = (id) => {
-    setMovies(
-      movies.map((m) => (m.id === id ? { ...m, watched: !m.watched } : m))
+    setMovies((currentMovies) =>
+      currentMovies.map((movie) =>
+        movie.id === id ? { ...movie, watched: !movie.watched } : movie
+      )
     )
   }
 
   const handleEdit = (movie) => {
-    setEditMovie(movie)
-    setShowForm(true)
+    setMovies((currentMovies) =>
+      currentMovies.map((currentMovie) =>
+        currentMovie.id === movie.id ? movie : currentMovie
+      )
+    )
   }
 
-  const handleSaveEdit = (updated) => {
-    setMovies(movies.map((m) => (m.id === updated.id ? updated : m)))
-    setEditMovie(null)
-    setShowForm(false)
+  const handleAddFromApi = (movieFromApi) => {
+    const alreadyExists = movies.some(
+      (movie) => movie.title.toLowerCase() === movieFromApi.title.toLowerCase()
+    )
+
+    if (alreadyExists) {
+      return false
+    }
+
+    setMovies((currentMovies) => [
+      { ...movieFromApi, id: Date.now() },
+      ...currentMovies,
+    ])
+    return true
   }
 
-  const handleCancelForm = () => {
-    setShowForm(false)
-    setEditMovie(null)
-  }
-
-  // получаем уникальные жанры для фильтра
-  const genres = ['Все', ...new Set(movies.map((m) => m.genre))]
-
-  // фильтрация: сначала по жанру, потом по поиску
-  const filtered = movies
-    .filter((m) => filterGenre === 'Все' || m.genre === filterGenre)
-    .filter((m) => m.title.toLowerCase().includes(searchText.toLowerCase()))
+  const watchedCount = movies.filter((movie) => movie.watched).length
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>🎬 Мои фильмы</h1>
-        <p className="subtitle">Всего: {movies.length} | Просмотрено: {movies.filter(m => m.watched).length}</p>
-      </header>
-
-      <div className="controls">
-        <SearchBar value={searchText} onChange={setSearchText} />
-
-        <div className="genre-filter">
-          {genres.map((g) => (
-            <button
-              key={g}
-              className={filterGenre === g ? 'filter-btn active' : 'filter-btn'}
-              onClick={() => setFilterGenre(g)}
-            >
-              {g}
-            </button>
-          ))}
-        </div>
-
-        <button className="add-btn" onClick={() => setShowForm(true)}>
-          + Добавить фильм
-        </button>
-      </div>
-
-      {/* форма показывается только если showForm = true */}
-      {showForm && (
-        <MovieForm
-          onAdd={handleAdd}
-          onSave={handleSaveEdit}
-          onCancel={handleCancelForm}
-          editData={editMovie}
+    <Layout totalMovies={movies.length} watchedCount={watchedCount}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MyMoviesPage
+              movies={movies}
+              onAdd={handleAdd}
+              onDelete={handleDelete}
+              onToggleWatched={handleToggleWatched}
+              onSaveEdit={handleEdit}
+            />
+          }
         />
-      )}
-
-      {filtered.length === 0 ? (
-        <p className="empty-msg">Ничего не найдено</p>
-      ) : (
-        <MovieList
-          movies={filtered}
-          onDelete={handleDelete}
-          onToggleWatched={handleToggleWatched}
-          onEdit={handleEdit}
+        <Route
+          path="/discover"
+          element={
+            <DiscoverPage movies={movies} onAddFromApi={handleAddFromApi} />
+          }
         />
-      )}
-    </div>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Layout>
   )
 }
 
